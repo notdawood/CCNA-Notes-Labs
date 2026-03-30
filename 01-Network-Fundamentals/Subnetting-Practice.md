@@ -7,7 +7,7 @@ IP: 192.168.1.0/26
 /26 → 32 IPs
 
 ### Step 2: Usable IPs
-32 - 2 = 30 usable
+64 - 2 = 62 usable
 
 ### Step 3: Subnets
 Block size = 64
