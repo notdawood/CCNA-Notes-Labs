@@ -1,0 +1,27 @@
+enable
+configure terminal
+
+hostname Router1
+
+! ======================
+! LAN Interface
+! ======================
+interface g0/0
+ip address 192.168.1.1 255.255.255.0
+no shutdown
+
+! ======================
+! DHCP Excluded Addresses
+! ======================
+ip dhcp excluded-address 192.168.1.1 192.168.1.10
+
+! ======================
+! DHCP Pool
+! ======================
+ip dhcp pool LAN
+network 192.168.1.0 255.255.255.0
+default-router 192.168.1.1
+dns-server 8.8.8.8
+
+end
+write memory
