@@ -1,0 +1,43 @@
+enable
+configure terminal
+
+hostname Router1
+
+! ======================
+! Interface
+! ======================
+interface g0/0
+ip address 192.168.1.1 255.255.255.0
+no shutdown
+
+! ======================
+! Enable Secret (مهم جدًا)
+! ======================
+enable secret class123
+
+! ======================
+! Console Password
+! ======================
+line console 0
+password cisco
+login
+
+! ======================
+! VTY Password (Remote)
+! ======================
+line vty 0 4
+password cisco
+login
+
+! ======================
+! Encrypt Passwords
+! ======================
+service password-encryption
+
+! ======================
+! Banner Message
+! ======================
+banner motd # Unauthorized access is prohibited #
+
+end
+write memory
