@@ -1,0 +1,47 @@
+enable
+configure terminal
+
+hostname Router1
+
+! ======================
+! Interface
+! ======================
+interface g0/0
+ip address 192.168.1.1 255.255.255.0
+no shutdown
+
+! ======================
+! Domain Name (Required for SSH)
+! ======================
+ip domain-name lab.local
+
+! ======================
+! Create User
+! ======================
+username admin privilege 15 secret cisco123
+
+! ======================
+! Generate RSA Keys (SSH)
+! ======================
+crypto key generate rsa
+1024
+
+! ======================
+! Enable SSH Version 2
+! ======================
+ip ssh version 2
+
+! ======================
+! VTY Lines Configuration
+! ======================
+line vty 0 4
+login local
+transport input ssh telnet
+
+! ======================
+! Enable Password
+! ======================
+enable secret class123
+
+end
+write memory
