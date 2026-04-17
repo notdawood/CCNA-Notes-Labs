@@ -1,0 +1,74 @@
+enable
+conf t
+
+hostname Router1
+
+! ======================
+! VLAN Routing
+! ======================
+interface g0/0.10
+encapsulation dot1Q 10
+ip address 192.168.10.1 255.255.255.0
+
+interface g0/0.20
+encapsulation dot1Q 20
+ip address 192.168.20.1 255.255.255.0
+
+interface g0/0
+no shutdown
+
+! ======================
+! Server Network
+! ======================
+interface g0/1
+ip address 192.168.30.1 255.255.255.0
+no shutdown
+
+! ======================
+! WAN
+! ======================
+interface g0/2
+ip address 10.0.0.1 255.255.255.0
+no shutdown
+
+! ======================
+! DHCP
+! ======================
+ip dhcp excluded-address 192.168.10.1
+ip dhcp excluded-address 192.168.20.1
+
+ip dhcp pool VLAN10
+network 192.168.10.0 255.255.255.0
+default-router 192.168.10.1
+
+ip dhcp pool VLAN20
+network 192.168.20.0 255.255.255.0
+default-router 192.168.20.1
+
+! ======================
+! NAT
+! ======================
+access-list 1 permit 192.168.10.0 0.0.0.255
+access-list 1 permit 192.168.20.0 0.0.0.255
+
+ip nat inside source list 1 interface g0/2 overload
+
+interface g0/0.10
+ip nat inside
+
+interface g0/0.20
+ip nat inside
+
+interface g0/1
+ip nat inside
+
+interface g0/2
+ip nat outside
+
+! ======================
+! ROUTE
+! ======================
+ip route 0.0.0.0 0.0.0.0 10.0.0.2
+
+end
+write
