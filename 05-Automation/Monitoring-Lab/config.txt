@@ -1,0 +1,36 @@
+enable
+configure terminal
+
+hostname Router1
+
+! ======================
+! Interface
+! ======================
+interface g0/0
+ip address 192.168.1.1 255.255.255.0
+no shutdown
+
+! ======================
+! Enable Logging
+! ======================
+logging on
+
+! Send logs to server
+logging host 192.168.1.100
+
+! Set logging level
+logging trap informational
+
+! ======================
+! NTP Configuration
+! ======================
+ntp server 192.168.1.100
+
+! ======================
+! Service timestamps
+! ======================
+service timestamps log datetime msec
+service timestamps debug datetime msec
+
+end
+write memory
