@@ -1,65 +1,96 @@
-# Day 8 - Static Routing Project Explanation
+# Day 13 - DNS Lab
 
 ## Overview
-This project demonstrates communication between two different networks using static routing between two Cisco 1941 routers.
+This lab demonstrates how DNS (Domain Name System) is used to resolve domain names into IP addresses using a Cisco router.
 
 ---
 
-## Network Topology
+## Objective
+- Understand how DNS works
+- Map a hostname to an IP address
+- Allow clients to access devices using names instead of IPs
 
-- Two routers connected to each other using a direct link.
-- Each router is connected to a separate LAN network.
+---
 
-### Networks:
-- Network 1: 192.168.1.0/24
-- Network 2: 192.168.2.0/24
-- Inter-router network: 10.0.0.0/24
+## Topology
+PC1, PC2, PC3 → Switch → Router1 (DNS Server)
 
 ---
 
 ## IP Addressing
-
-### Router1:
-- GigabitEthernet0/0 → 192.168.1.1
-- GigabitEthernet0/1 → 10.0.0.1
-
-### Router2:
-- GigabitEthernet0/0 → 10.0.0.2
-- GigabitEthernet0/1 → 192.168.2.1
+- Network: 192.168.1.0/24
+- Router1: 192.168.1.1
+- Server (PC): 192.168.1.10
 
 ---
 
-## Routing Configuration
+## DNS Concept
+DNS translates human-readable names (like server.local) into IP addresses (like 192.168.1.10).
 
-Static routes were configured on both routers to enable communication between the two networks.
-
-### Router1:
-- Route added to reach Network 192.168.2.0 via next hop 10.0.0.2
-
-### Router2:
-- Route added to reach Network 192.168.1.0 via next hop 10.0.0.1
+This allows users to access services using names instead of remembering numerical IP addresses.
 
 ---
 
-## Testing and Verification
+## Configuration Breakdown
 
-- Ping tests were performed between devices in both networks.
-- Successful replies confirm that routing is working correctly.
+### 1. Enable DNS on Router
+The command "ip domain-lookup" enables DNS functionality on the router.
 
-Example:
-- Ping from PC in Network 1 to PC in Network 2
-- Ping between routers over the 10.0.0.0 network
+---
+
+### 2. Create Static DNS Record
+The command:
+ip host server.local 192.168.1.10
+
+Maps the hostname "server.local" to the IP address 192.168.1.10.
+
+---
+
+### 3. DHCP Integration
+DHCP is configured to automatically assign:
+- IP address
+- Default gateway
+- DNS server (Router1)
+
+This allows clients to automatically use the router as their DNS server.
+
+---
+
+## How It Works
+
+1. A PC sends a request to resolve "server.local"
+2. Router checks its local DNS table
+3. Finds matching entry
+4. Returns IP address (192.168.1.10)
+5. PC sends traffic to that IP
+
+---
+
+## Verification Commands
+
+show hosts
+show ip interface brief
+
+---
+
+## Testing
+
+ping server.local
+
+Expected Result:
+- Successful ping reply using hostname
+
+---
+
+## Key Concepts
+
+- DNS resolves names to IP addresses
+- "ip host" creates static DNS entries
+- DHCP can provide DNS server automatically
+- Network must be working before DNS works
 
 ---
 
 ## Conclusion
 
-Static routing successfully enabled communication between two different networks.  
-This project demonstrates basic inter-network connectivity and routing concepts using Cisco routers.
-
----
-
-## Tools Used
-
-- Cisco Packet Tracer
-- Cisco 1941 Routers
+DNS simplifies network usage by allowing devices to communicate using names instead of IP addresses. This is a fundamental concept used in all modern networks.
