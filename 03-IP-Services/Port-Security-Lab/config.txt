@@ -1,0 +1,27 @@
+enable
+configure terminal
+
+hostname Switch1
+
+! ======================
+! Access Port
+! ======================
+interface f0/1
+switchport mode access
+switchport access vlan 1
+
+! ======================
+! Enable Port Security
+! ======================
+switchport port-security
+switchport port-security maximum 1
+switchport port-security violation shutdown
+switchport port-security mac-address sticky
+
+! ======================
+! تفعيل البورت
+! ======================
+no shutdown
+
+end
+write memory
